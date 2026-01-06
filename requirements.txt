@@ -1,0 +1,6 @@
+Using data found here: ⁠https://www.dnd5eapi.co/api/2014/
+Create a website that provides info on dnd.
+
+At very least, a user should be able to drill in at least 2 levels in at least 3 different areas *eg equipment -> abacus OR magic-items -> adamentine-armor"
+
+At least 2 of the pages drilled into should include images loaded from the json response of the endpoint
