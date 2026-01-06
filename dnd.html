@@ -35,8 +35,14 @@
       rules.addEventListener("click", () => {
         let Rtext = document.getElementById("ruleText");
         fetch("https://www.dnd5eapi.co/api/2014/rules/", requestOptions)
-          .then((response) => response.text())
-          .then((result) => (Rtext.innerText = result))
+          .then((response) => response.json())
+          .then((result) => {
+            for (i of result.results) {
+              classes = document.createElement("h3");
+              classes.innerHTML = `${i.name}`;
+              document.body.append(classes);
+            }
+          })
           .catch((error) => console.error(error));
       });
 
