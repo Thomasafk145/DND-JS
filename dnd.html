@@ -57,7 +57,9 @@
         <ul id="RtextList"></ul>
       </div>
       <div id="CtextDiv">
-        <ul id="CtextList"></ul>
+        <ul id="CtextList">
+          <div id="proficiencyData"></div>
+        </ul>
       </div>
     </div>
     <script>
@@ -76,6 +78,7 @@
       }
       const rules = document.getElementById("Rules");
       const Classes = document.getElementById("Classes");
+
       const myHeaders = new Headers();
       myHeaders.append("Accept", "application/json");
 
@@ -95,6 +98,12 @@
                 Rtypes = document.createElement("li");
                 Rtypes.innerHTML = `${i.name}`;
                 Rtext.append(Rtypes);
+                fetch(
+                  `https://www.dnd5eapi.co/api/2014/rules/${i.index}`,
+                  requestOptions
+                )
+                  .then((response) => response.json())
+                  .then((result) => {});
               }
             })
             .catch((error) => console.error(error));
@@ -109,12 +118,51 @@
             .then((result) => {
               for (i of result.results) {
                 classes = document.createElement("li");
-                classes.innerHTML = `${i.name}`;
-                Ctext.append(classes);
+                classes.innerHTML = `${i.name.toLowerCase()}`;
+                console.log(i);
+                Ctext.append(classes); //we've added an element
+                classes.setAttribute("data-url", i.url);
+                classes.addEventListener("click", getMoreData);
+                /*
+                let Cdata = document.querySelectorAll("li");
+
+                fetch(`https://www.dnd5eapi.co${i.url}`, requestOptions)
+                  .then((response) => response.json())
+                  .then((result) => {
+                    for (res in result) {
+                      console.log(res);
+                      Ctext.addEventListener("click", () => {
+                        fetch(
+                          `https://www.dnd5eapi.co${i.subclasses}`,
+                          requestOptions
+                        )
+                          .then((response) => response.json())
+                          .then((result) => {
+                            console.log(i["proficiencies"]);
+                          });
+                      });
+                    }
+                  });
+                  */
               }
             })
             .catch((error) => console.error(error));
         });
+      }
+
+      function getMoreData() {
+        fetch(
+          `https://www.dnd5eapi.co${
+            this.getAttribute("data-url") + "/proficiencies"
+          }`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            Pdata = document.createElement("li");
+            classes.innerHTML = `${i.name.toLowerCase()}`;
+          });
       }
       Start();
       /*
