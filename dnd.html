@@ -8,13 +8,61 @@
       body {
         background-repeat: no-repeat;
         background-size: cover;
+        background-color: black;
+        color: white;
+      }
+      #topicsDiv {
+        background-color: black;
+        color: white;
+        display: flex;
+        justify-content: space-around;
+      }
+      #data {
+        color: white;
+        background-color: black;
+        display: flex;
+        justify-content: space-around;
+        justify-items: center;
+      }
+      #RtextDiv {
+        color: white;
+        background-color: black;
+      }
+      #RtextList {
+        list-style: none;
+        display: block;
+        justify-content: space-between;
+        font-size: 20px;
+      }
+      #CtextDiv {
+        color: white;
+        background-color: black;
+        justify-items: right;
+      }
+      #CtextList {
+        list-style: none;
+        display: block;
+        justify-content: space-between;
+        font-size: 20px;
       }
     </style>
   </head>
   <body>
-    <h2 id="Rules">Rules</h2>
-    <h3 id="ruleText"></h3>
+    <div id="topicsDiv">
+      <h1 id="Rules">Rules</h1>
+      <h1 id="Classes">Classes</h1>
+    </div>
+    <div id="data">
+      <div id="RtextDiv">
+        <ul id="RtextList"></ul>
+      </div>
+      <div id="CtextDiv">
+        <ul id="CtextList"></ul>
+      </div>
+    </div>
     <script>
+      const dataDiv = document.getElementById("RtextDiv");
+
       function Start() {
         fetch("https://www.dnd5eapi.co/api/2014/")
           .then((response) => response.json())
@@ -22,8 +70,12 @@
             console.log(data);
             console.log(data.results);
           });
+
+        loadRules();
+        loadClasses();
       }
       const rules = document.getElementById("Rules");
+      const Classes = document.getElementById("Classes");
       const myHeaders = new Headers();
       myHeaders.append("Accept", "application/json");
 
@@ -32,20 +84,38 @@
         headers: myHeaders,
         redirect: "follow",
       };
-      rules.addEventListener("click", () => {
-        let Rtext = document.getElementById("ruleText");
-        fetch("https://www.dnd5eapi.co/api/2014/rules/", requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            for (i of result.results) {
-              classes = document.createElement("h3");
-              classes.innerHTML = `${i.name}`;
-              document.body.append(classes);
-            }
-          })
-          .catch((error) => console.error(error));
-      });
-
+      function loadRules() {
+        rules.addEventListener("click", () => {
+          let Rtext = document.getElementById("RtextList");
+          Rtext.innerHTML = "";
+          fetch("https://www.dnd5eapi.co/api/2014/rules/", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+              for (i of result.results) {
+                Rtypes = document.createElement("li");
+                Rtypes.innerHTML = `${i.name}`;
+                Rtext.append(Rtypes);
+              }
+            })
+            .catch((error) => console.error(error));
+        });
+      }
+      function loadClasses() {
+        Classes.addEventListener("click", () => {
+          let Ctext = document.getElementById("CtextList");
+          Ctext.innerHTML = "";
+          fetch("https://www.dnd5eapi.co/api/2014/classes/", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+              for (i of result.results) {
+                classes = document.createElement("li");
+                classes.innerHTML = `${i.name}`;
+                Ctext.append(classes);
+              }
+            })
+            .catch((error) => console.error(error));
+        });
+      }
       Start();
       /*
             OVERVIEW: Using data found here: ⁠https://www.dnd5eapi.co/api/2014/
