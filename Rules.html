@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rules</title>
+    <style>
+      body {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: white;
+        color: black;
+      }
+      #topicsDiv {
+        background-color: white;
+        color: black;
+        display: flex;
+        justify-content: space-around;
+      }
+      #data {
+        color: black;
+        background-color: white;
+        display: flex;
+        justify-content: space-around;
+        justify-items: center;
+      }
+      #RtextDiv {
+        color: black;
+        background-color: white;
+      }
+      #RtextList {
+        display: block;
+        justify-content: space-between;
+        font-size: 20px;
+      }
+      li {
+        display: block;
+        justify-content: space-evenly;
+        font-size: 15px;
+      }
+      ul {
+        display: block;
+        justify-content: space-between;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="topicsDiv">
+      <h1 id="Rules">Rules</h1>
+    </div>
+    <div id="data">
+      <div id="RtextDiv">
+        <ul id="RtextList"></ul>
+      </div>
+    </div>
+    <script>
+      const dataDiv = document.getElementById("RtextDiv");
+
+      function Start() {
+        fetch("https://www.dnd5eapi.co/api/2014/")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            console.log(data.results);
+          });
+
+        loadRules();
+      }
+      const rules = document.getElementById("Rules");
+      const Classes = document.getElementById("Classes");
+
+      const myHeaders = new Headers();
+      myHeaders.append("Accept", "application/json");
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      function loadRules() {
+        rules.addEventListener("click", () => {
+          let Rtext = document.getElementById("RtextList");
+          Rtext.innerHTML = "";
+          fetch("https://www.dnd5eapi.co/api/2014/rules/", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+              for (i of result.results) {
+                Rtypes = document.createElement("ul");
+                Rtypes.innerHTML = `${i.name}`;
+                console.log(i);
+                Rtext.append(Rtypes);
+                Rtypes.setAttribute("data-url", i.url);
+                Rtypes.addEventListener("click", getMoreRData);
+              }
+            })
+            .catch((error) => console.error(error));
+        });
+      }
+
+      function getMoreRData() {
+        fetch(
+          `https://www.dnd5eapi.co${this.getAttribute("data-url")}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            removes = document.querySelectorAll(".subs");
+            for (elem of removes) {
+              elem.remove();
+            }
+            for (i of result.subsections) {
+              Sdata = document.createElement("li");
+              console.log(Sdata);
+              Sdata.classList.add("subs");
+              Sdata.innerHTML = `${i.name}`;
+              this.append(Sdata);
+            }
+          });
+      }
+      Start();
+      /*
+            OVERVIEW: Using data found here: ⁠https://www.dnd5eapi.co/api/2014/
+            Create a website that provides info on dnd.
+            YOU DO NOT NEED TO COVER ALL ENDPOINTS, but before you start coding anything, create a document outlining what you are going to do (requirements doc), and create very basic wireframes (at least desktop mode) for the pages you are going to create.
+            At very least, a user should be able to drill in at least 2 levels in at least 3 different areas *eg equipment -> abacus OR magic-items -> adamentine-armor"
+            At least 2 of the pages drilled into should include images loaded from the json response of the endpoint (eg. https://www.dnd5eapi.co/api/images/magic-items/adamantine-armor.png)
+          */
+    </script>
+  </body>
+</html>
