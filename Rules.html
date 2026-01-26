@@ -8,26 +8,19 @@
       body {
         background-repeat: no-repeat;
         background-size: cover;
-        background-color: white;
-        color: black;
+        background-color: red;
+        color: white;
       }
       #topicsDiv {
-        background-color: white;
-        color: black;
         display: flex;
         justify-content: space-around;
       }
       #data {
-        color: black;
-        background-color: white;
         display: flex;
         justify-content: space-around;
         justify-items: center;
       }
-      #RtextDiv {
-        color: black;
-        background-color: white;
-      }
+
       #RtextList {
         display: block;
         justify-content: space-between;
@@ -107,17 +100,28 @@
           .then((response) => response.json())
           .then((result) => {
             console.log(result);
+
             removes = document.querySelectorAll(".subs");
             for (elem of removes) {
               elem.remove();
             }
             for (i of result.subsections) {
               Sdata = document.createElement("li");
-              console.log(Sdata);
+              console.log(i);
               Sdata.classList.add("subs");
-              Sdata.innerHTML = `${i.name}`;
+              Sdata.innerHTML = `${i.name}:`;
               this.append(Sdata);
+              getEvenMoreRData(Sdata, i.url);
             }
+          });
+      }
+      function getEvenMoreRData(elem, endpoint) {
+        fetch(`https://www.dnd5eapi.co${endpoint}`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            let description = result.desc;
+            elem.append(description);
           });
       }
       Start();
