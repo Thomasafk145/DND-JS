@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,35 +8,23 @@
       body {
         background-repeat: no-repeat;
         background-size: cover;
-        background-color: white;
-        color: black;
+        background-color: rgb(241, 71, 71);
+        color: white;
       }
       #topicsDiv {
-        background-color: white;
-        color: black;
         display: flex;
         justify-content: space-around;
       }
       #data {
-        color: black;
-        background-color: white;
         display: flex;
         justify-content: space-around;
         justify-items: center;
       }
-      #RtextDiv {
-        color: black;
-        background-color: white;
-      }
+
       #RtextList {
         display: block;
         justify-content: space-between;
         font-size: 20px;
-      }
-      #CtextDiv {
-        color: black;
-        background-color: white;
-        justify-items: right;
       }
       li {
         display: block;
@@ -110,7 +98,7 @@
           `https://www.dnd5eapi.co${
             this.getAttribute("data-url") + "/proficiencies"
           }`,
-          requestOptions
+          requestOptions,
         )
           .then((response) => response.json())
           .then((result) => {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
       body {
         background-repeat: no-repeat;
         background-size: cover;
-        background-color: red;
+        background-color: rgb(241, 71, 71);
         color: white;
       }
       #topicsDiv {
@@ -95,7 +95,7 @@
       function getMoreRData() {
         fetch(
           `https://www.dnd5eapi.co${this.getAttribute("data-url")}`,
-          requestOptions
+          requestOptions,
         )
           .then((response) => response.json())
           .then((result) => {
